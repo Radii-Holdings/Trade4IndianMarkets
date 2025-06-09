@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/broker_tokens
+      - ZERODHA_API_KEY=${ZERODHA_API_KEY}
+      - ZERODHA_API_SECRET=${ZERODHA_API_SECRET}
+      - FYERS_CLIENT_ID=${FYERS_CLIENT_ID}
+      - FYERS_SECRET_KEY=${FYERS_SECRET_KEY}
+      - ANGEL_CLIENT_CODE=${ANGEL_CLIENT_CODE}
+      - ANGEL_API_KEY=${ANGEL_API_KEY}
+      - ANGEL_SECRET=${ANGEL_SECRET}
+      - REDIRECT_URL=http://localhost:3000/api/broker/callback
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
